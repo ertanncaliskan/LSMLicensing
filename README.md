@@ -10,6 +10,8 @@ For making the process realistic, Socket Handshake and License Generator project
 
 https://simons-voss-intranet.herokuapp.com/
 
+For debugging the solution, multiple projects needs to be selected from solution -> Set Startup Projects menu item. These projects are LicenseRegistrationAPI and LicenseSignatureServiceHandshake.
+
 ### Overview
 
 - This is an sample cloud based license generator application. In this project, user provides required information(company name, contact person, email, license key etc.) from a basic user interface and gets signed license.
