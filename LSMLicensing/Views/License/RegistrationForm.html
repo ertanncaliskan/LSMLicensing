@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+
+<html class="layer-blue">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimonsVoss License Management</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/custom.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="d-none d-lg-block">
+                            <div class="slide-box">
+                                <img src="/images/SV_Logo_RGB_neg.jpg" alt="First slide" />
+                            </div>
+                        </div>
+                        <div class="d-none d-md-block d-lg-none">
+                            <div class="slide-box">
+                                <img src="/images/SV_Logo_RGB_neg.jpg" alt="First slide" />
+                            </div>
+                        </div>
+                        <div class="d-none d-sm-block d-md-none">
+                            <div class="slide-box">
+                                <img src="/images/SV_Logo_RGB_neg.jpg" alt="First slide" />
+                            </div>
+                        </div>
+                        <div class="d-block d-sm-none">
+                            <img src="/images/SV_Logo_RGB_neg.jpg" alt="First slide" />
+                        </div>
+                    </div>
+                    <div class="carousel-item" alt="Second slide">
+                        <div class="d-none d-lg-block">
+                            <div class="slide-box">
+                                <img src="/images/simons-voss-logo.jpg" alt="Second slide" />
+                            </div>
+                        </div>
+                        <div class="d-none d-md-block d-lg-none">
+                            <div class="slide-box">
+                                <img src="/images/simons-voss-logo.jpg" alt="Second slide" />
+                            </div>
+                        </div>
+                        <div class="d-none d-sm-block d-md-none">
+                            <div class="slide-box">
+                                <img src="/images/simons-voss-logo.jpg" alt="Second slide" />
+                            </div>
+                        </div>
+                        <div class="d-block d-sm-none">
+                            <img src="/images/simons-voss-logo.jpg" alt="Second slide" />
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="app">
+        <registration-form></registration-form>
+    </div>
+    <template id="registration-form">
+        <div class="form-wrap container">
+            <div v-if="!submitted">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input v-model="companyName"
+                           v-bind:class="{'form-control':true, 'is-invalid' : !filled(companyName) && companyNameBlured}"
+                           v-on:blur="companyNameBlured = true">
+                    <div class="invalid-feedback">Company name is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="contactPerson">Contact Person</label>
+                    <input v-model="contactPerson"
+                           v-bind:class="{'form-control':true, 'is-invalid' : !filled(contactPerson) && contactPersonBlured}"
+                           v-on:blur="contactPersonBlured = true">
+                    <div class="invalid-feedback">Contact person is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input v-model="email"
+                           v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}"
+                           v-on:blur="emailBlured = true">
+                    <div class="invalid-feedback">A valid email is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input v-model="address"
+                           v-bind:class="{'form-control':true, 'is-invalid' : !filled(address) && addressBlured}"
+                           v-on:blur="addressBlured = true">
+                    <div class="invalid-feedback">Address is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="licenseKey">License Key</label>
+                    <the-mask mask="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" masked="true" v-model="licenseKey"
+                              v-bind:class="{'form-control':true, 'is-invalid' : !filled(licenseKey) && licenseKeyBlured}"
+                              @@keyup.native="onBlur"></the-mask>
+                    <div class="invalid-feedback">License key is required</div>
+                </div>
+                <div v-if="!requestSent" class="form-group">
+                    <a type="submit" href="#" v-on:click.stop.prevent="submit" v-on:focus="onBlur" class="btn btn-lg btn-success">Submit</a>
+                </div>
+                <div v-else class="form-group">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            <div v-else-if="this.result.notifications != undefined && this.result.notifications.length == 0" class="alert alert-success" role="alert">
+                <h5>Your License Token is:</h5>
+                <p>{{ this.result.license }}</p>
+            </div>
+            <div v-else-if="this.result.notifications != undefined && this.result.notifications.length > 0" class="alert alert-danger" role="alert">
+                <h5>License creation failed:</h5>
+                <p v-for="item in this.result.notifications" :key="item.message">
+                    {{ item.message }}
+                </p>
+                <button type="button" v-on:click="refresh" class="btn btn-danger">Go Back</button>
+            </div>
+        </div>
+    </template>
+    <script type="text/javascript" src="/js/vue.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/carousel.js"></script>
+    <script type="text/javascript" src="/js/vue-the-mask.js"></script>
+    <script type="text/javascript" src="/js/axios.min.js"></script>
+    <script type="text/javascript">
+        Vue.component('registration-form', {
+            template: '#registration-form',
+            data: function () {
+                return {
+                    companyName: "",
+                    companyNameBlured: false,
+                    contactPerson: "",
+                    contactPersonBlured: false,
+                    email: "",
+                    emailBlured: false,
+                    address: "",
+                    addressBlured: false,
+                    licenseKey: "",
+                    licenseKeyBlured: false,
+                    valid: false,
+                    submitted: false,
+                    requestSent: false,
+                    result: {},
+                    token: ''
+                }
+            },
+            methods: {
+                validate: function () {
+                    this.emailBlured = true;
+                    this.companyNameBlured = true;
+                    this.contactPersonBlured = true;
+                    this.addressBlured = true;
+                    this.licenseKeyBlured = true;
+                    if (this.validEmail(this.email)
+                        && this.filled(this.address)
+                        && this.filled(this.companyName)
+                        && this.filled(this.contactPerson)
+                        && this.filled(this.licenseKey)
+                    ) {
+                        this.valid = true;
+                    }
+                },
+                filled: function (field) {
+                    return field != null && field != undefined && field != '';
+                },
+                refresh: function () {
+                    window.location.reload();
+                },
+                onBlur: function () {
+                    this.licenseKeyBlured = true;
+                },
+                validEmail: function (email) {
+                    var re = /(.+)@(.+){2,}\.(.+){2,}/;
+                    return re.test(email.toLowerCase());
+                },
+                submit: function () {
+                    this.validate();
+                    if (this.valid) {
+                        this.requestSent = true;
+                        axios.post('SaveRegistrationForm', {
+                            email: this.email,
+                            address: this.address,
+                            companyName: this.companyName,
+                            contactPerson: this.contactPerson,
+                            licenseKey: this.licenseKey
+                        })
+                            .then(response => {
+                                this.responseData = response.data;
+                                this.submitted = true;
+                                this.result = response.data;
+                            })
+                            .catch(error => { debugger; });
+                    }
+                }
+            }
+        })
+        new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+</html>
