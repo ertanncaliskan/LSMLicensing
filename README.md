@@ -10,7 +10,7 @@ For making the process realistic, Socket Handshake and License Generator project
 
 https://simons-voss-intranet.herokuapp.com/
 
-For debugging the solution, multiple projects needs to be selected from solution -> Set Startup Projects menu item. These projects are LicenseRegistrationAPI and LicenseSignatureServiceHandshake.
+For debugging the solution, multiple projects needs to be selected from solution -> Set Startup Projects menu item in Visual Studio. These projects are LicenseRegistrationAPI and LicenseSignatureServiceHandshake.
 
 ### Overview
 
