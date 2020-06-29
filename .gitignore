@@ -2,4 +2,10 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/LSMLicensing
+/.vs
+/LicenseSignatureService/bin
+/LicenseSignatureService/obj
+/LicenseSignatureServiceHandshake/bin
+/LicenseSignatureServiceHandshake/obj
+/LSMLicensing/bin
+/LSMLicensing/obj

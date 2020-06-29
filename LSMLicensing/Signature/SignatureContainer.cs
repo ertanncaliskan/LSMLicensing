@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.ComponentModel;
+using System.Collections.Concurrent;
 
 namespace LicenseRegistrationAPI.Signature
 {
     public static class SignatureContainer
     {
-        private static Dictionary<string, SignatureReference> _signatureDictionary = new Dictionary<string, SignatureReference>();
+        private static ConcurrentDictionary<string, SignatureReference> _signatureDictionary = new ConcurrentDictionary<string, SignatureReference>();
         public static bool CreateSignatureRequest(string licenseKey) 
         {
             if (!_signatureDictionary.ContainsKey(licenseKey)) 
@@ -28,7 +29,8 @@ namespace LicenseRegistrationAPI.Signature
         {
             _signatureDictionary[licenseKey].Signal.Wait(Startup.GeneralSettings.SocketInterval);
             var signature = _signatureDictionary[licenseKey].LicenseSignature;
-            _signatureDictionary.Remove(licenseKey);
+            SignatureReference outReference = null;
+            _signatureDictionary.Remove(licenseKey, out outReference);
             return signature;
         }
     }

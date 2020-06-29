@@ -69,7 +69,6 @@ namespace LicenseRegistrationAPI
                 endpoints.MapControllers();
                 endpoints.MapHub<SignatureHub>("/signhub");
             });
-            app.UseRewriter(new RewriteOptions().AddRewrite("/", "/License/RegistrationForm", true));
         }
     }
 }
