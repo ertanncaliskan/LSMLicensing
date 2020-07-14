@@ -24,11 +24,8 @@ namespace LicenseRegistrationAPI.Hubs
             return Task.CompletedTask;
         }
     }
-    public class SocketTokenRequirement : AuthorizationHandler<SocketTokenRequirement>, IAuthorizationRequirement
+    public class SocketTokenRequirement : IAuthorizationRequirement
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SocketTokenRequirement requirement)
-        {
-            return Task.CompletedTask;
-        }
+
     }
 }
